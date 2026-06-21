@@ -1,0 +1,32 @@
+name: missing_slot_policy
+version: v2
+owner: engineering
+purpose: Policy for missing slots and clarification gating.
+inputs:
+  - intent
+  - missing_fields
+  - conversation_state
+guardrails:
+  - Block routing when required slots are missing.
+  - Preserve the pending intent across turns.
+template: |
+  Apply Meridian's missing-slot policy.
+
+  Inputs:
+  - intent: {{ intent | default("") }}
+  - missing_fields: {{ missing_fields | tojson }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Policy:
+  - If required fields are missing, ask one clarification question and keep the intent pending.
+  - If clarification attempts exceed the safe limit, hand off to a human.
+  - Never manufacture missing data.
+
+  Return JSON only with:
+  - should_clarify
+  - should_handoff
+  - reason
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added explicit clarification gating policy.

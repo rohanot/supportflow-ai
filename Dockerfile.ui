@@ -1,0 +1,16 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY pyproject.toml README.md ./
+COPY streamlit_app ./streamlit_app
+COPY app ./app
+COPY prompts ./prompts
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir "streamlit>=1.36" "requests>=2.32" "pyyaml>=6.0"
+
+EXPOSE 8501
+
+CMD ["streamlit", "run", "streamlit_app/Home.py", "--server.address=0.0.0.0", "--server.port=8501"]
+

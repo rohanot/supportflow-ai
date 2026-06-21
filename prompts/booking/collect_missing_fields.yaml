@@ -1,0 +1,30 @@
+name: collect_missing_fields
+version: v2
+owner: engineering
+purpose: Collect booking fields that are still missing.
+inputs:
+  - intent
+  - missing_fields
+  - conversation_state
+guardrails:
+  - Ask only for the missing booking fields.
+  - Keep the follow-up question compact.
+template: |
+  Help collect the missing booking details for Meridian.
+
+  Inputs:
+  - intent: {{ intent | default("") }}
+  - missing_fields: {{ missing_fields | tojson }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Required behavior:
+  - Ask for the minimum set of details needed to continue.
+  - Group related fields into one question when that reduces friction.
+  - Do not ask for already-known values.
+
+  Return JSON only with:
+  - prompt
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Clarified booking field collection policy.

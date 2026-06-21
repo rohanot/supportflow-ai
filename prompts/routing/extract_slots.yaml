@@ -1,0 +1,33 @@
+name: extract_slots
+version: v2
+owner: engineering
+purpose: Extract structured slots from the user message.
+inputs:
+  - user_message
+  - conversation_state
+guardrails:
+  - Return only slots explicitly supported by the message or state.
+  - Do not hallucinate dates, ZIP codes, or booking ids.
+template: |
+  Extract structured slots for Meridian from the latest user message.
+
+  Inputs:
+  - user_message: {{ user_message | default("") }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Return JSON only with any of:
+  - zip_code
+  - service_type
+  - item_or_service_requested
+  - booking_id
+  - customer_id
+  - preferred_date
+  - preferred_window
+  - preferred_tech
+  - notes
+
+  If a field is not supported by the evidence, omit it or set it to null.
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Converted to strict structured extraction instructions.

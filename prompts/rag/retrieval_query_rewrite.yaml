@@ -1,0 +1,30 @@
+name: retrieval_query_rewrite
+version: v2
+owner: engineering
+purpose: Rewrite the query for retrieval.
+inputs:
+  - user_message
+  - canonical_query
+  - conversation_state
+guardrails:
+  - Preserve factual intent.
+  - Prefer search terms that match documents, policies, branches, and pricing tables.
+template: |
+  Rewrite the user request into a retrieval-optimized search query.
+
+  Inputs:
+  - user_message: {{ user_message | default("") }}
+  - canonical_query: {{ canonical_query | default("") }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Goals:
+  - Preserve the important nouns, service type, ZIP code, branch, policy, and pricing terms.
+  - Remove filler words.
+  - Expand ambiguous shorthand into likely document terms when safe.
+
+  Return JSON only with:
+  - rewritten_query
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added retrieval-tuned rewrite contract.

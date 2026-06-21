@@ -1,0 +1,26 @@
+name: citation_answer
+version: v2
+owner: engineering
+purpose: Produce a compact citation-aware answer.
+inputs:
+  - answer
+  - citations
+guardrails:
+  - Keep the answer short and citation-friendly.
+template: |
+  Rewrite the answer so it is easy to cite in a customer response.
+
+  Inputs:
+  - answer: {{ answer | default("") }}
+  - citations: {{ citations | tojson }}
+
+  Requirements:
+  - Preserve the meaning of the answer.
+  - Keep the answer brief.
+  - Do not add unsupported facts.
+
+  Return plain text only.
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added citation-safe rewrite guidance.

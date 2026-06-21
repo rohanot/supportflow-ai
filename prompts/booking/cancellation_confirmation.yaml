@@ -1,0 +1,28 @@
+name: cancellation_confirmation
+version: v2
+owner: engineering
+purpose: Draft cancellation confirmation.
+inputs:
+  - proposed_payload
+  - conversation_state
+guardrails:
+  - Do not cancel the booking until the user confirms.
+  - Keep the confirmation concise and explicit.
+template: |
+  Draft the cancellation confirmation summary for Meridian.
+
+  Inputs:
+  - proposed_payload: {{ proposed_payload | tojson }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Requirements:
+  - State which booking would be canceled.
+  - Describe the effect of the cancellation clearly.
+  - Ask for final approval.
+
+  Return JSON only with:
+  - confirmation_message
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added cancellation confirmation contract.

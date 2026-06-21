@@ -1,0 +1,38 @@
+name: grounded_answer
+version: v2
+owner: engineering
+purpose: Generate a grounded answer from retrieved context.
+inputs:
+  - user_message
+  - query
+  - retrieved_context
+  - citations
+  - conversation_state
+guardrails:
+  - Answer only from the retrieved context.
+  - Do not add facts that are not supported by citations.
+  - If evidence is thin, say so and keep the answer cautious.
+template: |
+  Answer Meridian's question using only the retrieved evidence.
+
+  Inputs:
+  - user_message: {{ user_message | default("") }}
+  - query: {{ query | default("") }}
+  - retrieved_context: {{ retrieved_context | default("") }}
+  - citations: {{ citations | tojson }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Response requirements:
+  - Be concise and customer-friendly, but always use a complete sentence.
+  - Mention the key answer first.
+  - Include source-aware wording with the source document name when evidence is available.
+  - Do not return a bare value like "$75"; write a full answer such as "The no-show fee is $75, according to 07_cancellation_policy.pdf."
+  - If you cannot answer confidently, explain what is missing and avoid guessing.
+
+  Return JSON only with:
+  - answer
+  - confidence
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added evidence-first answer contract.

@@ -1,0 +1,13 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+COPY pyproject.toml README.md ./
+COPY app ./app
+COPY evals ./evals
+COPY prompts ./prompts
+
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir "fastapi>=0.115" "sqlalchemy>=2.0" "psycopg[binary]>=3.2" "pyyaml>=6.0" "pytest>=8.0" "httpx>=0.27" "pydantic>=2.8" "pydantic-settings>=2.4" "litellm[proxy]>=1.44"
+
+CMD ["python", "-m", "pytest", "-q"]

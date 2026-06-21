@@ -1,0 +1,28 @@
+name: booking_confirmation
+version: v2
+owner: engineering
+purpose: Draft booking confirmation.
+inputs:
+  - proposed_payload
+  - conversation_state
+guardrails:
+  - Do not commit the booking.
+  - Show the customer what will happen next and what will be written.
+template: |
+  Draft the booking confirmation summary for Meridian.
+
+  Inputs:
+  - proposed_payload: {{ proposed_payload | tojson }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Requirements:
+  - Summarize the appointment details in plain language.
+  - Make the confirmation step explicit.
+  - Ask for approval before the tool call executes.
+
+  Return JSON only with:
+  - confirmation_message
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added explicit pre-commit confirmation contract.

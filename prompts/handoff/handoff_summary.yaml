@@ -1,0 +1,30 @@
+name: handoff_summary
+version: v2
+owner: engineering
+purpose: Summarize the case for human handoff.
+inputs:
+  - user_message
+  - conversation_state
+  - reason
+guardrails:
+  - Preserve the key facts and safety rationale.
+  - Do not add unsupported claims.
+template: |
+  Summarize why this Meridian conversation needs human handoff.
+
+  Inputs:
+  - user_message: {{ user_message | default("") }}
+  - conversation_state: {{ conversation_state | tojson }}
+  - reason: {{ reason | default("") }}
+
+  Requirements:
+  - Explain the issue in one short paragraph.
+  - Mention any missing context or safety concern.
+  - Provide enough detail for a human agent to continue.
+
+  Return JSON only with:
+  - handoff_summary
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added concise human-handoff summary contract.

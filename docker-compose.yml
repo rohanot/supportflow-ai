@@ -1,0 +1,64 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-serviceflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-serviceflow}
+      POSTGRES_DB: ${POSTGRES_DB:-serviceflow}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-serviceflow} -d ${POSTGRES_DB:-serviceflow}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://serviceflow:serviceflow@postgres:5432/serviceflow}
+      APP_ENV: ${APP_ENV:-local}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      TRACE_HEADER_NAME: ${TRACE_HEADER_NAME:-X-Trace-Id}
+      ALLOW_FALLBACK_LLM: ${ALLOW_FALLBACK_LLM:-false}
+      LLM_PROVIDER: ${LLM_PROVIDER:-groq}
+      LLM_MODEL: ${LLM_MODEL:-llama-3.1-8b-instant}
+      LLM_TEMPERATURE: ${LLM_TEMPERATURE:-0.0}
+      LLM_MAX_TOKENS: ${LLM_MAX_TOKENS:-512}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-30}
+      LLM_MAX_RETRIES: ${LLM_MAX_RETRIES:-0}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile.ui
+    environment:
+      API_BASE_URL: http://api:8000
+      STREAMLIT_SERVER_PORT: ${STREAMLIT_PORT:-8501}
+    ports:
+      - "${STREAMLIT_PORT:-8501}:8501"
+    depends_on:
+      - api
+
+  litellm:
+    build:
+      context: .
+      dockerfile: Dockerfile.eval
+    command: ["litellm", "--host", "0.0.0.0", "--port", "4000"]
+    ports:
+      - "${LITELLM_PORT:-4000}:4000"
+
+volumes:
+  postgres_data:

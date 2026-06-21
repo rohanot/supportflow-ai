@@ -1,0 +1,58 @@
+prompts:
+  assistant_system:
+    path: prompts/system/assistant_system.yaml
+    active_version: v2
+  safety_policy:
+    path: prompts/system/safety_policy.yaml
+    active_version: v2
+  classify_intent:
+    path: prompts/routing/classify_intent.yaml
+    active_version: v2
+  extract_slots:
+    path: prompts/routing/extract_slots.yaml
+    active_version: v2
+  route_decision:
+    path: prompts/routing/route_decision.yaml
+    active_version: v2
+  ask_clarification:
+    path: prompts/clarification/ask_clarification.yaml
+    active_version: v2
+  build_canonical_query:
+    path: prompts/clarification/build_canonical_query.yaml
+    active_version: v2
+  missing_slot_policy:
+    path: prompts/clarification/missing_slot_policy.yaml
+    active_version: v2
+  grounded_answer:
+    path: prompts/rag/grounded_answer.yaml
+    active_version: v2
+  citation_answer:
+    path: prompts/rag/citation_answer.yaml
+    active_version: v2
+  retrieval_query_rewrite:
+    path: prompts/rag/retrieval_query_rewrite.yaml
+    active_version: v2
+  collect_missing_fields:
+    path: prompts/booking/collect_missing_fields.yaml
+    active_version: v2
+  booking_confirmation:
+    path: prompts/booking/booking_confirmation.yaml
+    active_version: v2
+  reschedule_confirmation:
+    path: prompts/booking/reschedule_confirmation.yaml
+    active_version: v2
+  cancellation_confirmation:
+    path: prompts/booking/cancellation_confirmation.yaml
+    active_version: v2
+  handoff_summary:
+    path: prompts/handoff/handoff_summary.yaml
+    active_version: v2
+  emergency_handoff:
+    path: prompts/handoff/emergency_handoff.yaml
+    active_version: v2
+  judge_answer_support:
+    path: prompts/eval/judge_answer_support.yaml
+    active_version: v2
+  judge_tool_correctness:
+    path: prompts/eval/judge_tool_correctness.yaml
+    active_version: v2

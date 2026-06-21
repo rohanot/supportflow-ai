@@ -1,0 +1,27 @@
+name: reschedule_confirmation
+version: v2
+owner: engineering
+purpose: Draft reschedule confirmation.
+inputs:
+  - proposed_payload
+  - conversation_state
+guardrails:
+  - Do not commit the reschedule.
+  - Clarify the new slot and the booking being changed.
+template: |
+  Draft the reschedule confirmation summary for Meridian.
+
+  Inputs:
+  - proposed_payload: {{ proposed_payload | tojson }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Requirements:
+  - Summarize the current booking id, the requested new time, and the proposed service details.
+  - Make the write action explicit.
+
+  Return JSON only with:
+  - confirmation_message
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added reschedule confirmation contract.

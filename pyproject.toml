@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "serviceflow-ai"
+version = "0.1.0"
+description = "ServiceFlow AI for Meridian Home Services"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.30",
+  "pydantic>=2.8",
+  "pydantic-settings>=2.4",
+  "sqlalchemy>=2.0",
+  "alembic>=1.13",
+  "psycopg[binary]>=3.2",
+  "python-dotenv>=1.0",
+  "httpx>=0.27",
+  "tenacity>=8.5",
+  "orjson>=3.10",
+  "python-multipart>=0.0.9",
+  "jinja2>=3.1",
+  "pyyaml>=6.0",
+  "pypdf>=5.0",
+  "fastembed>=0.4",
+  "onnxruntime>=1.18",
+  "litellm>=1.44",
+  "pytest>=8.0",
+  "pytest-asyncio>=0.23",
+]
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.36"]
+ingestion = ["fastembed>=0.4", "onnxruntime>=1.18"]
+db = ["pgvector>=0.3"]
+observability = ["structlog>=24.0"]
+llm = ["litellm>=1.44"]
+all = [
+  "streamlit>=1.36",
+  "fastembed>=0.4",
+  "onnxruntime>=1.18",
+  "pgvector>=0.3",
+  "structlog>=24.0",
+  "litellm>=1.44",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["."]

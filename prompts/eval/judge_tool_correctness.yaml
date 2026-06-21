@@ -1,0 +1,31 @@
+name: judge_tool_correctness
+version: v2
+owner: engineering
+purpose: Judge whether the selected tool or route was correct.
+inputs:
+  - user_message
+  - route
+  - tool_name
+  - reasoning
+guardrails:
+  - Judge against the user request and required workflow, not the final wording.
+template: |
+  Evaluate whether the route or tool choice matches Meridian's workflow.
+
+  Inputs:
+  - user_message: {{ user_message | default("") }}
+  - route: {{ route | default("") }}
+  - tool_name: {{ tool_name | default("") }}
+  - reasoning: {{ reasoning | default("") }}
+
+  Decision criteria:
+  - Correct if the chosen route/tool matches the user's request and safety constraints.
+  - Incorrect if it skips clarification, misses handoff, or chooses the wrong workflow.
+
+  Return JSON only with:
+  - verdict
+  - rationale
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added route/tool correctness rubric.

@@ -1,0 +1,32 @@
+name: build_canonical_query
+version: v2
+owner: engineering
+purpose: Build a canonical query from the original and follow-up answer.
+inputs:
+  - original_query
+  - clarification_answer
+  - intent
+  - conversation_state
+guardrails:
+  - Preserve the user's actual intent.
+  - Avoid adding facts not present in the query or answer.
+template: |
+  Rewrite the conversation into a retrieval-ready canonical query.
+
+  Inputs:
+  - original_query: {{ original_query | default("") }}
+  - clarification_answer: {{ clarification_answer | default("") }}
+  - intent: {{ intent | default("") }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Rules:
+  - Keep the query short and specific.
+  - Preserve units, service type, ZIP, and customer constraints when present.
+  - Prefer a formulation that will work well for retrieval and evidence lookup.
+
+  Return JSON only with:
+  - canonical_query
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added retrieval-oriented rewrite instructions.

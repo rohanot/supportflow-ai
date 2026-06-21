@@ -1,0 +1,3 @@
+{"id":"clarify_001","input_turns":["Give me the price?","40-gallon water heater replacement"],"expected_missing_slots_first_turn":["item_or_service_requested"],"expected_canonical_query":"What is the ballpark price for plumbing 40-gallon water heater replacement?","expected_route":"hybrid_rag_answer"}
+{"id":"clarify_002","input_turns":["Do you service my area?","20147 plumbing"],"expected_missing_slots_first_turn":["zip_code","service_type"],"expected_canonical_query":"Check service-area eligibility for 20147 plumbing.","expected_route":"service_area_lookup"}
+

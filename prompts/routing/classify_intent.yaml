@@ -1,0 +1,45 @@
+name: classify_intent
+version: v2
+owner: engineering
+purpose: Classify user intent and choose the next workflow route.
+inputs:
+  - user_message
+  - conversation_state
+  - allowed_intents
+  - allowed_routes
+guardrails:
+  - Use only the provided intent and route labels.
+  - Do not infer a tool write action without confirmation.
+  - Prefer handoff when the message is unsafe or too vague.
+template: |
+  Decide how Meridian should handle the user's message.
+
+  Inputs:
+  - user_message: {{ user_message | default("") }}
+  - conversation_state: {{ conversation_state | tojson }}
+  - allowed_intents: {{ allowed_intents | tojson }}
+  - allowed_routes: {{ allowed_routes | tojson }}
+
+  Decision rules:
+  - Choose "emergency" for urgent safety or hazard language.
+  - Choose "service_area_check" when the user is asking whether service is available for a ZIP code or address.
+  - Choose "pricing" for price, estimate, or cost questions.
+  - Choose "new_booking" for requests to book an appointment.
+  - Choose "booking_status", "reschedule", or "cancel" when the user asks about an existing booking.
+  - Choose "faq_policy" for general information, policy, or operational questions.
+  - Choose "handoff" if the request is outside scope, risky, or the message is too ambiguous to route safely.
+
+  Output JSON only with:
+  - intent
+  - route
+  - missing_fields
+  - canonical_query
+  - clarification_question
+  - handoff_required
+  - handoff_reason
+  - confidence
+  - normalized_slots
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added explicit route contract and JSON output requirements.

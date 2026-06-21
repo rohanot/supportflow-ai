@@ -1,0 +1,55 @@
+%%{init: {"theme": "base", "flowchart": {"curve": "basis", "nodeSpacing": 38, "rankSpacing": 54}} }%%
+flowchart LR
+  classDef people fill:#f8fafc,stroke:#334155,color:#0f172a,stroke-width:1.5px;
+  classDef ui fill:#dbeafe,stroke:#2563eb,color:#0f172a,stroke-width:1.5px;
+  classDef app fill:#dcfce7,stroke:#16a34a,color:#0f172a,stroke-width:1.5px;
+  classDef orchestration fill:#ede9fe,stroke:#7c3aed,color:#0f172a,stroke-width:1.5px;
+  classDef services fill:#fef3c7,stroke:#d97706,color:#0f172a,stroke-width:1.5px;
+  classDef data fill:#e0f2fe,stroke:#0284c7,color:#0f172a,stroke-width:1.5px;
+  classDef action fill:#fee2e2,stroke:#dc2626,color:#0f172a,stroke-width:1.5px;
+
+  subgraph P["People"]
+    A["Customers / Admins / Reviewers"]
+  end
+
+  subgraph I["Interface"]
+    B["Streamlit UI"]
+  end
+
+  subgraph Bk["Backend"]
+    C["FastAPI Backend"]
+    D["LangGraph"]
+    E["Hybrid RAG + Tools"]
+  end
+
+  subgraph S["Services"]
+    F["LiteLLM"]
+    G["Mock Booking API"]
+  end
+
+  subgraph Dp["Data"]
+    H["Client PDFs + Uploads"]
+    J["Ingestion Pipeline"]
+    K["Postgres + pgvector + Traces"]
+  end
+
+  A --> B
+  B --> C
+  C --> D
+  C --> F
+  D --> E
+  E --> K
+  E --> G
+  H --> J
+  J --> K
+
+  class A people;
+  class B ui;
+  class C app;
+  class D orchestration;
+  class E app;
+  class F services;
+  class G action;
+  class H people;
+  class J data;
+  class K data;

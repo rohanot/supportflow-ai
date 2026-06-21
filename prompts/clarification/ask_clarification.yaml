@@ -1,0 +1,32 @@
+name: ask_clarification
+version: v2
+owner: engineering
+purpose: Draft the best clarification question for missing information.
+inputs:
+  - intent
+  - missing_fields
+  - conversation_state
+  - user_message
+guardrails:
+  - Ask only for the missing information.
+  - Keep the question short, direct, and one-turn.
+template: |
+  Write the next clarification question for Meridian.
+
+  Inputs:
+  - intent: {{ intent | default("") }}
+  - missing_fields: {{ missing_fields | tojson }}
+  - conversation_state: {{ conversation_state | tojson }}
+  - user_message: {{ user_message | default("") }}
+
+  Style:
+  - One sentence or two short sentences.
+  - Ask for the minimum information needed to continue.
+  - If multiple required fields are missing, group them into one question.
+
+  Return JSON only with:
+  - clarification_question
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added exact question-writing contract.

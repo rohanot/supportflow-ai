@@ -1,0 +1,30 @@
+name: judge_answer_support
+version: v2
+owner: engineering
+purpose: Judge whether an answer is supported by the evidence.
+inputs:
+  - answer
+  - citations
+  - retrieved_context
+guardrails:
+  - Judge only support, not style preference.
+template: |
+  Evaluate whether the answer is grounded in the provided evidence.
+
+  Inputs:
+  - answer: {{ answer | default("") }}
+  - citations: {{ citations | tojson }}
+  - retrieved_context: {{ retrieved_context | default("") }}
+
+  Decision criteria:
+  - "supported" if the answer is fully backed by the evidence.
+  - "partial" if some evidence exists but there are unsupported claims.
+  - "unsupported" if the answer invents or overstates facts.
+
+  Return JSON only with:
+  - verdict
+  - rationale
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added explicit support/judgment criteria.

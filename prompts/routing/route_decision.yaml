@@ -1,0 +1,33 @@
+name: route_decision
+version: v2
+owner: engineering
+purpose: Decide the next workflow route.
+inputs:
+  - intent
+  - missing_fields
+  - conversation_state
+guardrails:
+  - Keep routing deterministic and explainable.
+  - Never choose a write action route without confirmation-ready fields.
+template: |
+  Decide the next Meridian route from the current state.
+
+  Inputs:
+  - intent: {{ intent | default("") }}
+  - missing_fields: {{ missing_fields | tojson }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Route rules:
+  - "handoff" for emergency, unsafe, or out-of-scope cases.
+  - "ask_clarification" when required fields are missing.
+  - "service_area_lookup" only for ZIP/service eligibility checks.
+  - "hybrid_rag_answer" for grounded FAQ and pricing questions.
+
+  Return JSON only with:
+  - route
+  - rationale
+  - confidence
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added deterministic route policy and JSON output.

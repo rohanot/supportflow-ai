@@ -1,0 +1,28 @@
+name: emergency_handoff
+version: v2
+owner: engineering
+purpose: Draft the emergency handoff response.
+inputs:
+  - user_message
+  - conversation_state
+guardrails:
+  - Prioritize safety over task completion.
+  - Tell the user to contact a human immediately when appropriate.
+template: |
+  Draft the emergency handoff response for Meridian.
+
+  Inputs:
+  - user_message: {{ user_message | default("") }}
+  - conversation_state: {{ conversation_state | tojson }}
+
+  Requirements:
+  - Keep the response short and urgent.
+  - Acknowledge the safety concern.
+  - Direct the user to human support without trying to solve the issue in chat.
+
+  Return JSON only with:
+  - handoff_message
+change_log:
+  - version: v2
+    date: 2026-06-21
+    change: Added urgent safety wording and JSON output.
